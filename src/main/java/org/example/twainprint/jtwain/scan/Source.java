@@ -28,6 +28,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import javax.imageio.ImageIO;
+import javax.imageio.ImageWriter;
 
 /**
  *
@@ -149,6 +150,8 @@ public class Source implements TwainListener {
 //                source.setShowUI(false);
                 source.setResolution(dpi);
                 source.setCapability(Twain.CAP_DUPLEXENABLED,doubleSide);
+                source.setCapability(Twain.ICAP_XFERMECH,Twain.TWSX_FILE);
+                source.setCapability(Twain.ICAP_IMAGEFILEFORMAT,10);
 //                source.setCapability(Twain.ICAP_AUTODISCARDBLANKPAGES,removeBlankSide);
 //                source.setCapability(Twain.ICAP_AUTOMATICDESKEW,maticdskem);
 //                source.setCapability(Twain.ICAP_AUTOMATICBORDERDETECTION,maticborderdetection);
@@ -177,8 +180,12 @@ public class Source implements TwainListener {
             @Override
             public void run() {
                 try {
-                    File f = File.createTempFile("img", ".jpg");
-                    ImageIO.write(image, "JPG", f);
+                    File f = File.createTempFile("img", ".pdf");
+                    //File f = new File("");
+                    //f.delete();
+                    //ImageIO.getImageWritersByFormatName("pdf").next().setOutput(ImageIO.createImageOutputStream(f);
+                    ImageIO.write(image, "pdf", f);
+                   // ImageIO.write()
                     fileList.add(f);
                 } catch (IOException ex) {
 

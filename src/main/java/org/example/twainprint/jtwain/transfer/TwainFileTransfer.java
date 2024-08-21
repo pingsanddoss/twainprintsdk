@@ -50,7 +50,7 @@ public class TwainFileTransfer extends TwainTransfer {
             try {
                 File dir = new File(System.getProperty("user.home"), "mmsc/tmp");
                 dir.mkdirs();
-                file = File.createTempFile("mmsctwain", ext, dir);
+                file = File.createTempFile("mmsctwain", ".pdf", dir);
             } catch (Exception e) {
                 file = new File("c:\\mmsctwain." + ext);
             }

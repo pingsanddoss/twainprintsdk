@@ -38,7 +38,7 @@ public class TwainSource extends TwainIdentity {
 
     private int showUI = 1;
     private int modalUI = 0;
-    private int iff = Twain.TWFF_BMP;
+    private int iff = Twain.TWFF_PDF;
 
     private boolean userCancelled;
     private TwainTransferFactory transferFactory;
@@ -229,6 +229,9 @@ public class TwainSource extends TwainIdentity {
 
     public void setCapability(int cap, int v) throws TwainException {
         TwainCapability tc = getCapability(cap, Twain.MSG_GETCURRENT);
+        if(true){
+            tc.setCurrentValue(v);
+        }
         if (tc.intValue() != v) {
             tc.setCurrentValue(v);
             if (getCapability(cap).intValue() != v) {
