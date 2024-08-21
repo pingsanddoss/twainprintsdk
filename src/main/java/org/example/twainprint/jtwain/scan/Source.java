@@ -149,9 +149,9 @@ public class Source implements TwainListener {
 //                source.setShowUI(false);
                 source.setResolution(dpi);
                 source.setCapability(Twain.CAP_DUPLEXENABLED,doubleSide);
-                source.setCapability(Twain.ICAP_AUTODISCARDBLANKPAGES,removeBlankSide);
-                source.setCapability(Twain.ICAP_AUTOMATICDESKEW,maticdskem);
-                source.setCapability(Twain.ICAP_AUTOMATICBORDERDETECTION,maticborderdetection);
+//                source.setCapability(Twain.ICAP_AUTODISCARDBLANKPAGES,removeBlankSide);
+//                source.setCapability(Twain.ICAP_AUTOMATICDESKEW,maticdskem);
+//                source.setCapability(Twain.ICAP_AUTOMATICBORDERDETECTION,maticborderdetection);
                 TwainCapability pt = source.getCapability(Twain.ICAP_PIXELTYPE);
                 switch (color) {
                     case BW:

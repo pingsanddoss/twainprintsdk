@@ -124,7 +124,8 @@ public class TwainSource extends TwainIdentity {
     }
 
     private boolean isTwain20() {
-        return (identity.SupportedGroups & 0x40000000) != 0;
+       return false;
+        //return (identity.SupportedGroups & 0x40000000) != 0;
     }
 
     @Override
@@ -343,10 +344,10 @@ public class TwainSource extends TwainIdentity {
             }
         }
 
-        if (isTwain20()) {
-            twSemaphore = new Semaphore(0, true);
-            twHaveImage = false;
-        }
+//        if (isTwain20()) {
+//            twSemaphore = new Semaphore(0, true);
+//            twHaveImage = false;
+//        }
 
         modalUI = 0;
         Win32Twain.TW_USERINTERFACE ui = new Win32Twain.TW_USERINTERFACE();
@@ -364,34 +365,34 @@ public class TwainSource extends TwainIdentity {
             close();
         }
 
-        if (isTwain20()) {
-            try {
-
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            twSemaphore.tryAcquire(5, TimeUnit.MINUTES);
-                            twSemaphore.release();
-
-                            if (twHaveImage) {
-                                transferImage();
-                            } else {
-                               throw new TwainException("Scan timeout");
-                            }
-
-
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }).start();
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                throw new TwainException(e);
-            }
-        }
+//        if (isTwain20()) {
+//            try {
+//
+//                new Thread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        try {
+//                            twSemaphore.tryAcquire(5, TimeUnit.MINUTES);
+//                            twSemaphore.release();
+//
+//                            if (twHaveImage) {
+//                                transferImage();
+//                            } else {
+//                               throw new TwainException("Scan timeout");
+//                            }
+//
+//
+//                        } catch (Exception e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                }).start();
+//
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//                throw new TwainException(e);
+//            }
+//        }
     }
 
     private void transfer(TwainTransfer tt) throws TwainException {

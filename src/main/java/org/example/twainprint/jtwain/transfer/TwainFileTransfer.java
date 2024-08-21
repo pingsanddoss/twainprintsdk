@@ -65,7 +65,7 @@ public class TwainFileTransfer extends TwainTransfer {
         String file = getFile().getPath();
         int iff = getImageFileFormat();
 
-        byte[] setup = new byte[999999999];
+        byte[] setup = new byte[260];
         TwainUtils.setString(setup, 0, file);
         TwainUtils.setINT16(setup, 256, iff);
         TwainUtils.setINT16(setup, 258, 0);

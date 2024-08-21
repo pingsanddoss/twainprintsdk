@@ -59,7 +59,7 @@ public class TwainPrintController {
              // source.setMaticborderdetection(twainMachineName.getMaticborderdetection());
               //开始扫描
               source.scan();
-              SourceManager.instance().freeResources();
+              //SourceManager.instance().freeResources();
               return "ok";
             }else {
                 SourceManager.instance().freeResources();
