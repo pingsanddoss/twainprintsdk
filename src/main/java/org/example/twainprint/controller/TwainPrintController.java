@@ -1,6 +1,6 @@
 package org.example.twainprint.controller;
 
-import jakarta.servlet.http.HttpServletRequest;
+
 import org.example.twainprint.entity.TwainMachineName;
 import org.example.twainprint.jtwain.exceptions.TwainException;
 import org.example.twainprint.jtwain.scan.Source;
@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
@@ -29,7 +30,7 @@ public class TwainPrintController {
         }
     }
 
-    @RequestMapping(value = "/san", method = RequestMethod.GET)
+    @RequestMapping(value = "/scan", method = RequestMethod.GET)
     public Object sacn(TwainMachineName twainMachineName, HttpServletRequest req)  {
         try {
             if (twainMachineName.getNameIndex() != null){
@@ -51,16 +52,17 @@ public class TwainPrintController {
               //设置是否双面扫描
               source.setDoubleSide(twainMachineName.getDoubleSide());
               //是否去除白页
-              source.setRemoveBlankSide(twainMachineName.getRemoveBlankSide());
+             // source.setRemoveBlankSide(twainMachineName.getRemoveBlankSide());
               //是否开启自动校正
-              source.setMaticdskem(twainMachineName.getMaticdskem());
+             // source.setMaticdskem(twainMachineName.getMaticdskem());
               //是否开启自动边缘检测
-              source.setMaticborderdetection(twainMachineName.getMaticborderdetection());
+             // source.setMaticborderdetection(twainMachineName.getMaticborderdetection());
               //开始扫描
               source.scan();
               SourceManager.instance().freeResources();
               return "ok";
             }else {
+                SourceManager.instance().freeResources();
                 return "未选择twain";
             }
 
@@ -69,5 +71,5 @@ public class TwainPrintController {
         }
     }
 
-
+//http://localhost:8080/scan?nameIndex=2&systemUI=false&color=0&dpi=300&doubleSide=true
 }
