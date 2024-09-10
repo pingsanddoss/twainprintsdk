@@ -124,6 +124,11 @@ public class Twain {
     public static final short DAT_JPEGCOMPRESSION = 0x0109;
     public static final short DAT_PALETTE8 = 0x010a;
     public static final short DAT_EXTIMAGEINFO = 0x010b;
+    public static final short DAT_AUDIOFILEXFER = 0x0201;
+    public static final short DAT_AUDIOINFO = 0x0202;
+    public static final short DAT_AUDIONATIVEXFER = 0x0203;
+    public static final short DAT_ICCPROFILE = 0x0401;
+    public static final short DAT_IMAGEMEMFILEXFER = 0x0402;
 
     public static final short TWCP_NONE = 0;
     public static final short TWCP_PACKBITS = 1;
@@ -356,6 +361,7 @@ public class Twain {
     public static final int TWSX_FILE = 1;
     public static final int TWSX_MEMORY = 2;
     public static final int TWSX_FILE2 = 3;
+    public static final int TWSX_MEMFILE = 4;
 
     public static final int HWND_DESKTOP = 0x10014;
     public static final int WS_POPUPWINDOW = 0x80000000 | 0x00800000 | 0x00080000;
@@ -1129,21 +1135,23 @@ public class Twain {
         getSourceManager().getSource().setCancel(c);
     }
 
-    public static void nnew(byte[] imx, int preferredSize) {
-        Pointer p = kernel32.GlobalAlloc(0, preferredSize);
-        Win32Twain.TW_IMAGEMEMXFER im = new Win32Twain.TW_IMAGEMEMXFER();
-        im.getPointer().write(0, imx, 0, im.size());
-        im.read();
+    public native static void nnew(byte[] imx, int preferredSize);
 
-        im.Memory.Flags = TWMF_APPOWNS | TWMF_HANDLE;
-        im.Memory.Length = preferredSize;
-        im.Memory.TheMem = p;
-
-        im.write();
-        im.getPointer().read(0, imx, 0, im.size());
-
-        im.Memory.TheMem = null;
-    }
+//    public static void nnew(byte[] imx, int preferredSize) {
+//        Pointer p = kernel32.GlobalAlloc(0, preferredSize);
+//        Win32Twain.TW_IMAGEMEMXFER im = new Win32Twain.TW_IMAGEMEMXFER();
+//        im.getPointer().write(0, imx, 0, im.size());
+//        im.read();
+//
+//        im.Memory.Flags = TWMF_APPOWNS | TWMF_HANDLE;
+//        im.Memory.Length = preferredSize;
+//        im.Memory.TheMem = p;
+//
+//        im.write();
+//        im.getPointer().read(0, imx, 0, im.size());
+//
+//        im.Memory.TheMem = null;
+//    }
 
     public static int ncopy(byte[] buffer, byte[] imx, int bytesWritten) {
         Win32Twain.TW_IMAGEMEMXFER ix = new Win32Twain.TW_IMAGEMEMXFER();

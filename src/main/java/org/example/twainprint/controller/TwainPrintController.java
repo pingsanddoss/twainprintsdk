@@ -30,6 +30,7 @@ public class TwainPrintController {
         }
     }
 
+// 开始扫描
     @RequestMapping(value = "/scan", method = RequestMethod.GET)
     public Object sacn(TwainMachineName twainMachineName, HttpServletRequest req)  {
         try {
@@ -54,7 +55,9 @@ public class TwainPrintController {
               //是否去除白页
              // source.setRemoveBlankSide(twainMachineName.getRemoveBlankSide());
               //是否开启自动校正
-             // source.setMaticdskem(twainMachineName.getMaticdskem());
+              source.setMaticdskem(twainMachineName.getMaticdskem());
+              //图片格式
+              source.setXhr(twainMachineName.getXhr());
               //是否开启自动边缘检测
              // source.setMaticborderdetection(twainMachineName.getMaticborderdetection());
               //开始扫描
@@ -71,5 +74,5 @@ public class TwainPrintController {
         }
     }
 
-//http://localhost:8080/scan?nameIndex=2&systemUI=false&color=0&dpi=300&doubleSide=true
+//http://localhost:8080/scan?nameIndex=2&systemUI=false&color=0&dpi=300&doubleSide=true&maticdskem=true&xhr=4
 }

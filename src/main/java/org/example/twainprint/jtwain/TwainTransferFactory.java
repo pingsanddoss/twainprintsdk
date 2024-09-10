@@ -24,9 +24,13 @@ import org.example.twainprint.jtwain.transfer.TwainTransfer;
  */
 public interface TwainTransferFactory {
 
+    TwainTransfer createMemoryFileTransfer(TwainSource source);
+
     TwainTransfer createNativeTransfer(TwainSource source);
 
     TwainTransfer createFileTransfer(TwainSource source);
 
     TwainTransfer createMemoryTransfer(TwainSource source);
+
+    //TwainTransfer createMemoryFileTransfer(TwainTransfer source);
 }

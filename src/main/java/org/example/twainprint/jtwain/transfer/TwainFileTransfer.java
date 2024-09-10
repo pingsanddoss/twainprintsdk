@@ -16,12 +16,14 @@
 package org.example.twainprint.jtwain.transfer;
 
 
+import org.example.twainprint.entity.TwainMachineName;
 import org.example.twainprint.jtwain.Twain;
 import org.example.twainprint.jtwain.TwainSource;
 import org.example.twainprint.jtwain.exceptions.TwainException;
 import org.example.twainprint.jtwain.utils.TwainUtils;
 
 import java.io.File;
+import java.util.Random;
 
 /**
  *
@@ -36,7 +38,7 @@ public class TwainFileTransfer extends TwainTransfer {
         file = null;
     }
 
-    protected int getImageFileFormat() {
+    public int getImageFileFormat() {
         return source.getImageFileFormat();
     }
 
@@ -44,25 +46,32 @@ public class TwainFileTransfer extends TwainTransfer {
         file = f;
     }
 
-    public File getFile() {
-        if (file == null) {
+    public String getFile() {
+
             String ext = Twain.ImageFileFormatExts[getImageFileFormat()];
             try {
                 File dir = new File(System.getProperty("user.home"), "mmsc/tmp");
                 dir.mkdirs();
-                file = File.createTempFile("mmsctwain", ".pdf", dir);
+                if(TwainMachineName.getXhr() == 4){
+                //file = File.createTempFile("mmsctwain", ".jpg", dir);
+                 return    dir.getPath()+"/mms"+new Random().nextInt(999999999) +".jpg";
+                }else if (TwainMachineName.getXhr() == 10){
+                  //  file = File.createTempFile("mmsctwain", ".pdf", dir);
+                    return dir.getPath()+"/mms"+new Random().nextInt(999999999)+".pdf";
+                }
             } catch (Exception e) {
                 file = new File("c:\\mmsctwain." + ext);
             }
-        }
-        return file;
+
+      //  return file;
+        return null;
     }
 
     @Override
     public void initiate() throws TwainException {
         super.initiate();
 
-        String file = getFile().getPath();
+        String file = getFile();
         int iff = getImageFileFormat();
 
         byte[] setup = new byte[260];

@@ -38,7 +38,7 @@ public class TwainSource extends TwainIdentity {
 
     private int showUI = 1;
     private int modalUI = 0;
-    private int iff = Twain.TWFF_PDF;
+    private int iff = Twain.TWFF_JFIF;
 
     private boolean userCancelled;
     private TwainTransferFactory transferFactory;
@@ -150,6 +150,7 @@ public class TwainSource extends TwainIdentity {
         return status.Whole;
     }
 
+    //dg 2 dat 259 msg 1
     public void call(short dg, short dat, short msg, Object data) throws TwainCheckStatusException, TwainCancelException, TwainNotDSException, TwainTransferDoneException, TwainException {
         int rc = Twain.callSource(identity, dg, dat, msg, data);
         switch (rc) {
@@ -457,6 +458,8 @@ public class TwainSource extends TwainIdentity {
             case Twain.TWSX_MEMORY:
                 transfer(transferFactory.createMemoryTransfer(this));
                 break;
+            case Twain.TWSX_MEMFILE:
+                transfer(transferFactory.createMemoryFileTransfer(this));
             default:
                 break;
         }

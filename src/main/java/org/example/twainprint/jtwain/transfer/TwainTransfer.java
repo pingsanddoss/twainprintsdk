@@ -20,6 +20,9 @@ import org.example.twainprint.jtwain.Twain;
 import org.example.twainprint.jtwain.TwainSource;
 import org.example.twainprint.jtwain.exceptions.TwainException;
 import org.example.twainprint.jtwain.exceptions.TwainUserCancelException;
+import org.example.twainprint.jtwain.utils.TwainUtils;
+
+import java.io.IOException;
 
 /**
  *
@@ -56,5 +59,41 @@ public class TwainTransfer {
     }
 
     public void cleanup() throws TwainException {
+    }
+
+    public static class Info{
+
+        private byte[] imx;
+        private byte[] buf;
+        private int    len;
+
+        Info(byte[] imx,byte[] buf){this.imx=imx;this.buf=buf;}
+
+        public byte[] getBuffer(){return buf;}
+        public int getCompression(){return TwainUtils.getINT16(imx,0);}
+        public int getBytesPerRow(){return TwainUtils.getINT32(imx,2);}
+        public int getWidth(){return TwainUtils.getINT32(imx,6);}         // columns
+        public int getHeight(){return TwainUtils.getINT32(imx,10);}       // rows
+        public int getLeft(){return TwainUtils.getINT32(imx,14);}         // xoffset
+        public int getTop(){return TwainUtils.getINT32(imx,18);}          // yoffset
+        public int getLength(){return TwainUtils.getINT32(imx,22);}       // bytesWritten
+
+        public int getMemFlags(){return TwainUtils.getINT32(imx,26);}
+        public int getMemLength(){return TwainUtils.getINT32(imx,30);}
+        public long getMemPtr(){return TwainUtils.getPtr(imx,34);}
+
+        public String toString(){
+            String s=getClass().getName()+"\n";
+            s+="\tcompression = "+getCompression()+"\n";
+            s+="\tbytes per row = "+getBytesPerRow()+"\n";
+            s+="\ttop = "+getTop()+" left = "+getLeft()+" width = "+getWidth()+" height = "+getHeight()+"\n";
+            s+="\tbytes = "+getLength()+"\n";
+
+            s+="\tmemory flags   = 0x"+Integer.toHexString(getMemFlags())+"\n";
+            s+="\tmemory length  = "+getMemLength()+"\n";
+            s+="\tmemory pointer = 0x"+Long.toHexString(getMemPtr())+"\n";
+
+            return s;
+        }
     }
 }

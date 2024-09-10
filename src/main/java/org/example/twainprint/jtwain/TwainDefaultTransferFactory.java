@@ -16,10 +16,7 @@
 package org.example.twainprint.jtwain;
 
 
-import org.example.twainprint.jtwain.transfer.TwainFileTransfer;
-import org.example.twainprint.jtwain.transfer.TwainMemoryTransfer;
-import org.example.twainprint.jtwain.transfer.TwainNativeTransfer;
-import org.example.twainprint.jtwain.transfer.TwainTransfer;
+import org.example.twainprint.jtwain.transfer.*;
 
 /**
  *
@@ -33,6 +30,13 @@ public class TwainDefaultTransferFactory implements TwainTransferFactory {
     @Override
     public TwainTransfer createMemoryTransfer(TwainSource source) {
         return new TwainMemoryTransfer(source);
+    }
+
+
+
+    @Override
+    public TwainTransfer createMemoryFileTransfer(TwainSource source) {
+        return new TwainMemoryFileTransfer(source);
     }
 
     @Override

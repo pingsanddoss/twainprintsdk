@@ -28,6 +28,16 @@ public class TwainMachineName {
     private Boolean maticdskem;
     //自动边缘检测
     private Boolean maticborderdetection;
+    //格式
+    private static int xhr;
+
+    public static int getXhr() {
+        return xhr;
+    }
+
+    public void setXhr(int xhr) {
+        this.xhr = xhr;
+    }
 
     public Integer getNameIndex() {
         return nameIndex;

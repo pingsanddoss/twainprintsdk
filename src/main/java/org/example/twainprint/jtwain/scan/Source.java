@@ -18,8 +18,11 @@ package org.example.twainprint.jtwain.scan;
 
 import org.example.twainprint.jtwain.*;
 import org.example.twainprint.jtwain.exceptions.TwainException;
+import org.example.twainprint.jtwain.transfer.TwainMemoryTransfer;
+import org.example.twainprint.jtwain.transfer.TwainTransfer;
 
 import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -45,6 +48,8 @@ public class Source implements TwainListener {
     private boolean maticdskem = false;
     private boolean maticborderdetection = false;
 
+    private int xhr = 4;
+
     private String name;
 
     private final Object syncObject = new Object();
@@ -55,6 +60,13 @@ public class Source implements TwainListener {
     public Source() {
     }
 
+    public int getXhr() {
+        return xhr;
+    }
+
+    public void setXhr(int xhr) {
+        this.xhr = xhr;
+    }
 
     public boolean getMaticborderdetection() {
         return maticborderdetection;
@@ -136,6 +148,8 @@ public class Source implements TwainListener {
         } else if (type == TwainIOMetadata.ACQUIRED && metadata.getState() == 7) {
             pushImage(metadata.getImage());
             metadata.setImage(null);
+  //          if(type == TwainIOMetadata.MEMORY){
+
         } else if (type == TwainIOMetadata.STATECHANGE && metadata.getState() == 3 && metadata.getLastState() == 4) {
             jobDone();
         }
@@ -146,14 +160,15 @@ public class Source implements TwainListener {
             source.setShowProgressBar(true);
             source.setShowUI(systemUI);
 
-            if (!systemUI) {
+            if (true) {
 //                source.setShowUI(false);
                 source.setResolution(dpi);
                 source.setCapability(Twain.CAP_DUPLEXENABLED,doubleSide);
                 source.setCapability(Twain.ICAP_XFERMECH,Twain.TWSX_FILE);
-                source.setCapability(Twain.ICAP_IMAGEFILEFORMAT,10);
+                source.setCapability(Twain.ICAP_IMAGEFILEFORMAT,xhr);
+                //source.setCapability(Twain.ICAP_IMAGEFILEFORMAT,10);
 //                source.setCapability(Twain.ICAP_AUTODISCARDBLANKPAGES,removeBlankSide);
-//                source.setCapability(Twain.ICAP_AUTOMATICDESKEW,maticdskem);
+                source.setCapability(Twain.ICAP_AUTOMATICDESKEW,maticdskem);
 //                source.setCapability(Twain.ICAP_AUTOMATICBORDERDETECTION,maticborderdetection);
                 TwainCapability pt = source.getCapability(Twain.ICAP_PIXELTYPE);
                 switch (color) {
@@ -180,11 +195,11 @@ public class Source implements TwainListener {
             @Override
             public void run() {
                 try {
-                    File f = File.createTempFile("img", ".pdf");
+                    File f = File.createTempFile("img", ".jpg");
                     //File f = new File("");
                     //f.delete();
                     //ImageIO.getImageWritersByFormatName("pdf").next().setOutput(ImageIO.createImageOutputStream(f);
-                    ImageIO.write(image, "pdf", f);
+                    ImageIO.write(image, "jpg", f);
                    // ImageIO.write()
                     fileList.add(f);
                 } catch (IOException ex) {

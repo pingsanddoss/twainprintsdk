@@ -21,6 +21,7 @@ package org.example.twainprint.jtwain.utils;
  */
 public class TwainUtils {
 
+    static private        int         ptrSize = 0;                          // in byte
     public static int getINT16(byte[] buf, int off) {
         return (buf[off++] & 0x00FF) | (buf[off] << 8);
     }
@@ -71,6 +72,12 @@ public class TwainUtils {
 
     public static void setString(byte[] buf, int off, String s) {
         System.arraycopy(s.getBytes(), 0, buf, 0, s.length());
+    }
+
+    public static long getPtr(byte[] buf, int off){
+        if(ptrSize==8){return getINT64(buf,off);
+        }else{         return getINT32(buf,off);
+        }
     }
 
 }
