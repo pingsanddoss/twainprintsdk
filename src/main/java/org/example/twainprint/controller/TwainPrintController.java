@@ -5,12 +5,15 @@ import org.example.twainprint.entity.TwainMachineName;
 import org.example.twainprint.jtwain.exceptions.TwainException;
 import org.example.twainprint.jtwain.scan.Source;
 import org.example.twainprint.jtwain.scan.SourceManager;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.example.twainprint.jtwain.transfer.TwainFileTransfer;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 @RestController
@@ -30,7 +33,22 @@ public class TwainPrintController {
         }
     }
 
-// 开始扫描
+    public static String fileToBase64(String filePath) {
+        String base64String = "";
+        File file = new File(filePath);
+        try (FileInputStream fileInputStream = new FileInputStream(file)) {
+            byte[] bytes = new byte[(int) file.length()];
+            fileInputStream.read(bytes);
+            base64String = Base64.getEncoder().encodeToString(bytes);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return base64String;
+    }
+
+//
+//开始扫描
+    @CrossOrigin(origins = "*")
     @RequestMapping(value = "/scan", method = RequestMethod.GET)
     public Object sacn(TwainMachineName twainMachineName, HttpServletRequest req)  {
         try {
@@ -60,10 +78,25 @@ public class TwainPrintController {
               source.setXhr(twainMachineName.getXhr());
               //是否开启自动边缘检测
              // source.setMaticborderdetection(twainMachineName.getMaticborderdetection());
+                TwainFileTransfer.filelist = new ArrayList<>();
+                TwainFileTransfer.filetype = null;
               //开始扫描
               source.scan();
+              FileData fileData = new FileData();
+                for (String e:TwainFileTransfer.filelist){
+                    if(TwainFileTransfer.filetype.equals("pdf")) {
+                        String a = "data:application/pdf;base64," + fileToBase64(e);
+                        fileData.getFile().add(a);
+                        fileData.setType("pdf");
+                    }else {
+                        String b = "data:application/jpg;base64," + fileToBase64(e);
+                        fileData.getFile().add(b);
+                        fileData.setType("jpg");
+                    }
+                };
+
               //SourceManager.instance().freeResources();
-              return "ok";
+              return fileData;
             }else {
                 SourceManager.instance().freeResources();
                 return "未选择twain";

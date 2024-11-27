@@ -23,6 +23,7 @@ import org.example.twainprint.jtwain.exceptions.TwainException;
 import org.example.twainprint.jtwain.utils.TwainUtils;
 
 import java.io.File;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -31,6 +32,8 @@ import java.util.Random;
  */
 public class TwainFileTransfer extends TwainTransfer {
 
+    public static List<String> filelist;
+    public static String filetype;
     protected File file;
 
     public TwainFileTransfer(TwainSource source) {
@@ -54,9 +57,11 @@ public class TwainFileTransfer extends TwainTransfer {
                 dir.mkdirs();
                 if(TwainMachineName.getXhr() == 4){
                 //file = File.createTempFile("mmsctwain", ".jpg", dir);
+                    TwainFileTransfer.filetype = "jpg";
                  return    dir.getPath()+"/mms"+new Random().nextInt(999999999) +".jpg";
                 }else if (TwainMachineName.getXhr() == 10){
                   //  file = File.createTempFile("mmsctwain", ".pdf", dir);
+                    TwainFileTransfer.filetype = "pdf";
                     return dir.getPath()+"/mms"+new Random().nextInt(999999999)+".pdf";
                 }
             } catch (Exception e) {
@@ -72,6 +77,7 @@ public class TwainFileTransfer extends TwainTransfer {
         super.initiate();
 
         String file = getFile();
+        TwainFileTransfer.filelist.add(file);
         int iff = getImageFileFormat();
 
         byte[] setup = new byte[260];
